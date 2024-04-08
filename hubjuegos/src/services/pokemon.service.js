@@ -1,6 +1,6 @@
 import { axiosUtil } from "../utils";
 
-export const GetByIdPokemon = async (id)=>{
+export const getByIdPokemon = async (id)=>{
     const optionResquest = {
         method: "GET",
         url: `https://pokeapi.co/api/v2/pokemon/${id}`,

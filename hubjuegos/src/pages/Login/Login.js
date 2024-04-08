@@ -1,8 +1,7 @@
-//Login.js ----> src/pages/Login/Login.js
-
 import { setUser, setUserData } from "../../global/state/globalstate" ;
 import { initControler } from "../../utils/route";
 import "./Login.css";
+
 const template = () => `
   <div id="containerLogin">
     <h1 id="titleLogin">LOGIN</h1>

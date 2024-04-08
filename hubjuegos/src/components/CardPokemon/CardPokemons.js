@@ -1,7 +1,7 @@
 import { getUserData, setUserData } from "../../global/state/globalstate";
 import "./CardPokemons.css";
 
-export const CardsPokemon = (data) => {
+export const CardsPokemons = (data) => {
     //me traigo al usuario
     const appUser= getUserData();
     // borro la galeria
