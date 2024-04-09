@@ -1,5 +1,5 @@
 import { getUser } from "../global/state/globalstate";
-import { Login, PrintPokemonPage, printTemplateDashboard } from "../pages"; //faltaria añadir PrintTicTacToePage()
+import { Login, PrintPokemonPage, printTemplateDashboard, PrintMemoryPage } from "../pages"; //faltaria añadir PrintTicTacToePage()
 
 
 export const initControler = (pagesRender) => {// pagina a renderizar en la app
@@ -24,7 +24,8 @@ export const initControler = (pagesRender) => {// pagina a renderizar en la app
         Login();
         break;
       case "Memory":
-        "Memory()";
+        PrintMemoryPage();
+        ;
         break;
     }
   };

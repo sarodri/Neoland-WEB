@@ -1,5 +1,6 @@
 import { setUser, setUserData } from "../../global/state/globalstate" ;
 import { initControler } from "../../utils/route";
+import { getStateMemory } from "../../global/state/memoryState";
 import "./Login.css";
 
 const template = () => `
@@ -56,6 +57,7 @@ const addListeners = () => {
 };
 
 export const Login = () => {
+  clearInterval(getStateMemory("interval"));
   /** cuando pintamos el login hay que ocultar la nav con sus navegaciones */
   document.querySelector("nav").style.display = "none";
   document.querySelector("main").innerHTML = template();

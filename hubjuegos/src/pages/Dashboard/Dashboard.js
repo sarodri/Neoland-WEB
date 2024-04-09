@@ -1,3 +1,4 @@
+import { getStateMemory } from "../../global/state/memoryState";
 import { initControler, getInfo } from "../../utils";
 import "./Dashboard.css";
 
@@ -14,7 +15,7 @@ const template = () => `
         </figure>
       </li>
       <li>
-        <figure>
+        <figure id="navigateTicTacToe">
           <img
             src="../../../public/image/TicTacToe.png"
             alt=" go to Tic Tac Toe game"
@@ -23,7 +24,7 @@ const template = () => `
         </figure>
       </li>
       <li>
-        <figure>
+        <figure id="navigateMemory">
           <img
             src="https://res.cloudinary.com/dq186ej4c/image/upload/v1689761735/6168776_kfna36.png"
             alt="go to memory game"
@@ -41,14 +42,20 @@ const addEventListeners = () => {
   navigatePokemon.addEventListener("click", () => {
     initControler("Pokemon");
   });
+
+  const navigateMemory = document.getElementById("navigateMemory");
+  navigateMemory.addEventListener("click", () => {
+    initControler("Memory");
+  });
 };
 
 export const printTemplateDashboard = () => {
-
+  clearInterval(getStateMemory("interval"));
   document.querySelector("main").innerHTML = template();
 
   document.querySelector("nav").style.display = "flex";
 
   addEventListeners();
+
   getInfo();
 };
