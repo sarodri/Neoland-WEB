@@ -18,11 +18,6 @@ const addListeners = () => {
 
     // como trabajo con el local lo convierto a string
 
-    /**
-     * Lo unico especial tiene este login es que comprueba si ya tenemos un usuario
-     * en el local con datos dee algun usuario con el mismo nombre
-     * y asi lo asocia para coger los me gusta de los pokemon
-     */
     if (localStorage.getItem(`${valueInput}USER`)) {
       const localUser = localStorage.getItem(`${valueInput}USER`);
       const parseUser = JSON.parse(localUser);
@@ -39,9 +34,6 @@ const addListeners = () => {
       // y seteamos los datos del locaStorage en los datos de usuario logado con sus favoritos
       setUserData(parseUser);
     } else {
-      /** en caso de no estar este usuario de antes registrado en el localStorage lo que hacemos es que lo crearemos
-       * de cero con su array de fav vacio y el token en true y el nombre es el nomvre del input
-       */
       const customUser = {
         name: username.value,
         fav: [],
