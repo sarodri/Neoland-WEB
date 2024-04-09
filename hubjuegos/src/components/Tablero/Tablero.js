@@ -3,7 +3,7 @@ function crearTablero() {
     return tablero;
 }
 
-function mostrarTablero(tablero) {
+export function mostrarTablero(tablero) {
     const tableroElement = document.createElement('div');
     tableroElement.className = 'tablero';
     tablero.forEach((fila, i) => {
