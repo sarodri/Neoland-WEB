@@ -47,6 +47,11 @@ const addEventListeners = () => {
   navigateMemory.addEventListener("click", () => {
     initControler("Memory");
   });
+
+  const navigateTicTacToe = document.getElementById("navigateTicTacToe");
+  navigateMemory.addEventListener("click", () => {
+    initControler("TicTacToe");
+  });
 };
 
 export const printTemplateDashboard = () => {
