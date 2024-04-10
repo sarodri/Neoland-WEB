@@ -17,7 +17,7 @@ const template = () => `
       <li>
         <figure id="navigateTicTacToe">
           <img
-            src="../../../public/image/TicTacToe.png"
+            src="./image/TicTacToe.png"
             alt=" go to Tic Tac Toe game"
           />
           <h2>TIC TAC TOE</h2>
@@ -49,7 +49,7 @@ const addEventListeners = () => {
   });
 
   const navigateTicTacToe = document.getElementById("navigateTicTacToe");
-  navigateMemory.addEventListener("click", () => {
+  navigateTicTacToe.addEventListener("click", () => {
     initControler("TicTacToe");
   });
 };

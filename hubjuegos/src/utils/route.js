@@ -1,5 +1,5 @@
 import { getUser } from "../global/state/globalstate";
-import { Login, PrintPokemonPage, printTemplateDashboard, PrintMemoryPage } from "../pages"; //faltaria añadir PrintTicTacToePage()
+import { Login, PrintPokemonPage, printTemplateDashboard, PrintMemoryPage, PrintTicTacToePage } from "../pages"; //faltaria añadir PrintTicTacToePage()
 
 
 export const initControler = (pagesRender) => {// pagina a renderizar en la app
