@@ -17,7 +17,7 @@ const template = () => `
       <li>
         <figure id="navigateTicTacToe">
           <img
-            src="./image/TicTacToe.png"
+            src="../../../public/image/TicTacToe.png"
             alt=" go to Tic Tac Toe game"
           />
           <h2>TIC TAC TOE</h2>

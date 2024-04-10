@@ -1,26 +1,25 @@
-.image{
-  width: 140px;
-  height: 140px;
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.portada{
+.portada {
   border-radius: 40px;
   margin-bottom: 30px;
   display: flex;
   justify-items: center;
-  width: 70%;
-
+  width: 50%;
 }
-#result{
+#result {
   display: flex;
   flex-direction: column;
-  width: 35%; 
+  width: 35%;
 }
-.won img{
-  border-radius: 80%;
-
+.won img {
+  border-radius: 50%;
 }
 
-.portada img{
+.portada img {
   border-radius: 40px;
   width: 100%;
 }
@@ -28,36 +27,39 @@
   border-radius: 50%;
   width: 100%;
 }
-#start{
+#start {
   border-radius: 50%;
   padding: 0px;
 }
 #containerMemory {
-      width: 100vw;
-    min-height: 100vh;
+  padding: 1rem;
+  width: 100vw;
+  min-height: 70vh;
   background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
   background-size: 520px;
   background-position-x: 15px;
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .wrapper {
   box-sizing: content-box;
-  width: 36em;
-  padding: 2.5em 3em;
+
+  width: 35em;
+  padding: 1.5rem;
+
   background-color: #ffffff;
-  position: absolute;
-  transform: translate(-30%, -30%);
-  left: 40%;
-  top: 50%;
-  margin:0 auto;
   border-radius: 0.6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
 }
 .game-c {
-  position: relative;
-  width: 100%;
+ 
   display: grid;
-  gap: 0.6em;
 }
 .stats-c {
   text-align: right;
@@ -68,16 +70,16 @@
 }
 .card-container {
   position: relative;
-  width: 8.6em;
-  height: 8.6em;
+  width: 6.2em;
+  height: 6.2em;
   cursor: pointer;
 }
 .card-before,
 .card-after {
   position: absolute;
   border-radius: 5px;
-  width: 100%;
-  height: 100%;
+  width: 85%;
+  height: 85%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,6 +100,11 @@
 .card-container.flipped .card-before {
   transform: rotateY(180deg);
 }
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .card-container.flipped .card-after {
   transform: rotateY(0deg);
 }
@@ -105,12 +112,18 @@
   position: absolute;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  min-height: 70vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
   background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);
-  top: 120px;
+  
+  &.hide {
+  display: none !important;
+}
 }
 button {
   border: none;
@@ -129,15 +142,12 @@ button {
   font-size: 1.3em;
   box-shadow: 0 0.6em 2em rgba(86, 66, 0, 0.2);
 }
-.hide {
-  display: none;
-}
+
 #result {
   text-align: center;
 }
 #result h2 {
   font-size: 2.5em;
-
 }
 #result h4 {
   font-size: 1.8em;
@@ -145,228 +155,173 @@ button {
 }
 
 .won img {
-  width: 100%;
+  width: 60%;
 }
 
-@media (max-width: 993px){
-
+@media (max-width: 993px) {
   #containerMemory {
     background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
     background-size: 20%;
-    background-position-x:50px;
+    background-position-x: 50px;
   }
+
+  .won img {
+  width: 70%;
+}
 }
 
-
-@media (max-width: 769px){
-
+@media (max-width: 769px) {
   .wrapper {
     box-sizing: content-box;
     width: 30em;
     padding: 2.5em 3em;
     background-color: #ffffff;
-    position: absolute;
-    transform: translate(-30%, -30%);
-    left: 35%;
-    top: 32%;
+
     border-radius: 0.6em;
     box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
+  }
+
+  .won img {
+  width: 100%;
 }
-  .card-container{
-  width: 6.5em;
-  height: 6.5em;
-  gap:10px;
-  margin:0px
-  };
+  .card-container {
+    width: 6.5em;
+    height: 6.5em;
+
+    margin: 0px;
+  }
   .controls-c {
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    
     width: 100%;
     height: 100%;
     background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);
-    
   }
-  .image{
-    width: 70px;
-    height: 70px;
-  }
-  .portada{
+
+  .portada {
     width: 90%;
   }
-  #containerMemory{
+  #containerMemory {
     background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
     background-size: 45%;
     background-position-x: -15px;
   }
 }
 
-@media (max-width: 490px){
-
+@media (max-width: 490px) {
   .wrapper {
     box-sizing: content-box;
     width: 21em;
     padding: 2.5em 3em;
     background-color: #ffffff;
-    position: absolute;
-    transform: translate(-30%, -30%);
-    left: 32%;
-    top: 35%;
-    border-radius: 0.6em;
     box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
-}
-  .card-container{
-  width: 5em;
-  height: 5em;
-  gap:10px;
-  margin:0px
-  };
-  .controls-c{
+  }
+  .card-container {
+   
+    width: 5em;
+    height: 5em;
+
+    margin: 0px;
+  }
+  .controls-c {
+    
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    
     width: 100%;
     height: 100%;
     background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);
-    
   }
-  .image{
-    width: 70px;
-    height: 70px;
-  }
-  .portada{
+  .portada {
     width: 90%;
   }
-  #containerMemory{
-    background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
-    background-size: 30%;
+  #start {
+    width: 50%;
   }
-}
-
-@media (max-width: 420px){
-
-  .wrapper {
-    box-sizing: content-box;
-    width: 20em;
-    /* padding: 2.5em 3em; */
-    background-color: #ffffff;
-    position: absolute;
-    transform: translate(-30%, -30%);
-    left: 30%;
-    top: 32%;
-
-    box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
-
-  
-
-}
-
-
-  .card-container{
-    width: 4.6em;
-  height: 4.6em;
-  gap:5px;
-  margin:0px
-  };
-
-  .controls-c {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);    
-  }
-
-  .image{
-    width: 70px;
-    height: 70px;
-  }
-
-  .portada{
-    width: 90%;
-  }
-
   #containerMemory {
     background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
     background-size: 30%;
   }
 }
 
-
-
-@media (max-width: 391px){
-
-
-
+@media (max-width: 420px) {
   .wrapper {
     box-sizing: content-box;
-    width: 18em;
-    padding: 3.1em 4em;
-    
-    background-color: #ffffff62;
-    position: absolute;
-    transform: translate(-30%, -30%);
-    left: 25%;
-    top: 35%;
-    border-radius: 0px;
+    width: 20em;
+    /* padding: 2.5em 3em; */
+    background-color: #ffffff;
     box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
-}
-.portada{
-  width: 90%;
-}
-  
-  .card-container{
-    width: 4.6em;
-  height: 4.6em;
-  gap:5px;
-  margin:0px
-  };
+  }
 
-  .controls-c{
+  .card-container {
+    width: 4.6em;
+    height: 4.6em;
+
+    margin: 0px;
+  }
+
+  .controls-c {
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+   
     width: 100%;
     height: 100%;
     background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);
-    
   }
-
-  .image{
-    width: 70px;
-    height: 70px;
+  .portada {
+    width: 90%;
   }
-  #containerMemory{
+  #containerMemory {
     background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
     background-size: 30%;
-  
-  
+  }
+}
+
+@media (max-width: 391px) {
+  .wrapper {
+    box-sizing: content-box;
+    width: 18em;
+   
+
+    background-color: #ffffff62;
+    position: absolute;
+
+    border-radius: 0px;
+    box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
+  }
+  .portada {
+    width: 90%;
+  }
+
+  .card-container {
+    width: 4.6em;
+    height: 4.6em;
+
+    margin: 0px;
+  }
+
+  .controls-c {
+    position: absolute;
+    
+    width: 100%;
+    height: 100%;
+    background: url(http://pa1.narvii.com/6262/98d31b354870e705baaab116fc5bfcef4306d342_00.gif);
+  }
+  #containerMemory {
+    background: url(https://c.tenor.com/0gjKrSIJuNIAAAAC/nyan-cat.gif);
+    background-size: 30%;
   }
 }
 
 /* ---------IPHONE  SE --------- */
-@media (max-width: 376px){
-
+@media (max-width: 376px) {
+  #containerMemory {
+    padding: 0;
+  }
   .wrapper {
     box-sizing: content-box;
     width: 17.5em;
-    padding: 3.1em 4em;
     
     background-color: #ffffff62;
-    position: absolute;
-    transform: translate(-30%, -30%);
-    left: 23.5%;
-    top: 35%;
     border-radius: 0px;
     box-shadow: 0 0.9em 2.8em rgba(86, 66, 0, 0.2);
-}
+  }
 }

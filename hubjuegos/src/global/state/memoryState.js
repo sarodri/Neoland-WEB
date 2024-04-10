@@ -1,4 +1,4 @@
-const dataState = {
+let dataState = {
   seconds: 0,
   minutes: 0,
   movesCount: 0,
@@ -8,10 +8,16 @@ const dataState = {
   firstCard: false,
   secondCard: false,
   stopGame: null,
+  firstCardValue: null,
+  secondCardValue: null,
 };
 
 export const getStateMemory = (typeOfValue) => {
   switch (typeOfValue) {
+    case "firstCardValue":
+      return dataState.firstCardValue;
+    case "secondCardValue":
+      return dataState.secondCardValue;
     case "seconds":
       return dataState.seconds;
     case "minutes":
@@ -39,6 +45,12 @@ export const getStateMemory = (typeOfValue) => {
 
 export const setStateMemory = (typeOfValue, setValue) => {
   switch (typeOfValue) {
+    case "firstCardValue":
+      dataState.firstCardValue = setValue;
+      break;
+    case "secondCardValue":
+      dataState.secondCardValue = setValue;
+      break;
     case "seconds":
       dataState.seconds = setValue;
       break;
@@ -67,5 +79,20 @@ export const setStateMemory = (typeOfValue, setValue) => {
     case "stopGame":
       dataState.stopGame = setValue;
       break;
+
+    case "reset":
+      dataState = {
+        seconds: 0,
+        minutes: 0,
+        movesCount: 0,
+        winCount: 0,
+        cards: null,
+        interval: dataState.interval,
+        firstCard: false,
+        secondCard: false,
+        stopGame: null,
+        firstCardValue: null,
+        secondCardValue: null,
+      };
   }
 };

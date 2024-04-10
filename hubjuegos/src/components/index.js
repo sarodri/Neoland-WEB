@@ -5,3 +5,4 @@ export * from "./spinner/SpinnerButton";
 export * from "./spinner/Spinner";
 export * from "./ButtonFilter/ButtonFilter";
 export * from "./CardMemory/CardMemory";
+export * from "./Tablero/Tablero"
