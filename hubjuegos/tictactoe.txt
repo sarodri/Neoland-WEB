@@ -1,0 +1,21 @@
+La estructura del juego es :
+
+Components: Tablero.js-- startJuego (recorre las celdas y añade el evento click), reiniciarJuego (reinicia las variables y borra las casillas)
+
+Page: TicTacToe.js--- Crea template, llama a startJuego y renderiza innerHTML
+
+Global/state: Tenemos las variables y las funciones Set y Get.
+
+Utils: Combinaciones.js-- Tenemos las funciones del juego: 
+
+hayGanador (comprueba si hay ganador comparando las casillas de cada jugador con un array de combinaciones ganadoras),
+
+cambiarTurno (comprueba por estados en que turno está, y cambia de turno asignando otro valor a las nueva casilla), 
+
+incrementarContador (suma uno al contador a través del estado), 
+
+clicarCasilla (añade al array del jugador la casilla que ha clicado), 
+
+marcarCasilla (comprueba el contenido de la casilla y añade el valor del turno "x" o "o" dependiendo de cual toque)
+
+

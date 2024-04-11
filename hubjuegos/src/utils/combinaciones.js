@@ -3,7 +3,7 @@ import { status } from "../pages";
 import { celdas, jugadores, reiniciar } from "../pages";
 
 
-function setStatus(string) { 
+export function setStatus(string) { 
     status.innerHTML = string;
 }
 export const hayGanador = ()=> {

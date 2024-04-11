@@ -32,17 +32,16 @@ export const reiniciarJuego = () =>{
     jugadores[0].classList.add("active");
     jugadores[1].classList.remove("active");
 
+ // Reiniciamos la variable 
     setStateTicTacToe("playerO", []);
     setStateTicTacToe("playerX", []);
     setStateTicTacToe("contador", 0);
+    setStateTicTacToe("turn", "x");
 
     // Borramos el contenido de todas las casillas
     for (let i = 0; i < celdas.length; i++) {
         celdas[i].textContent = "";
     }
-    // Reiniciamos la variable de turn
-    setStateTicTacToe("turn", "x");
-
     status.innerHTML = "Game in progress...";
     reiniciar.style.display =  "none";
    }
