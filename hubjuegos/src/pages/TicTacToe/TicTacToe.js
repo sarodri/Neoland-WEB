@@ -1,4 +1,4 @@
-import { activarCasillas} from "../../components";
+import { startJuego} from "../../components";
 import "./TicTacToe.css"
 
 const template=() => `
@@ -40,22 +40,25 @@ const template=() => `
 </section>
 <section id = "players">
     <div id="player1" class="player 1">Player 1</div>
-    <div id="player2" class="player 2"Player 2</div>
+    <div id="player2" class="player 2">Player 2</div>
 </section>
 `
 
 // exporto los elementos del template que voy a necesitar
 export const status = document.getElementById("status")
 export const celdas = document.querySelectorAll(".tile")
-export const jugadores = document.querySelectorAll(".player")
+export const jugadores = document.querySelectorAll(".player");
+//const reinicio = document.getElementsByClassName("restart");
 export const reiniciar = document.getElementById("restart-btn");
 
 
 export const PrintTicTacToePage = () =>{
     document.querySelector("main").innerHTML = template();
-    document.addEventListener("DOMContentLoaded", () =>{
-        reiniciar.style.display = "none";
-        jugadores[0].classList.add("active")}
-    )
-    activarCasillas();
+    
+    startJuego();
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+    document.getElementById("restart-btn").style.display="none";
+    players[0].classList.add("active")
+})
 }

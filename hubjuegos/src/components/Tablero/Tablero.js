@@ -1,26 +1,28 @@
 import { celdas, jugadores, status, reiniciar } from "../../pages"
 import { getStateTicTacToe, setStateTicTacToe } from "../../global/state/tictactoe.state";
 import { incrementarContador, hayGanador, cambiarTurno, clicarCasilla, marcarCasilla } from "../../utils";
+import "../../pages/TicTacToe/TicTacToe.css"
 
 
 // Añadimos un evento de clic a todas las casillas del tablero
-export const activarCasillas =(celdas)=>{
-    for (let i = 0; i < celdas.length; i++) {
-    celdas[i].addEventListener("click",  () => {
-    if (getStateTicTacToe("huboGanador")==true){
-        return
-    }
+export const startJuego = () => {
+    celdas.forEach(celda => {
+      celda.addEventListener("click", function() {
+        if (getStateTicTacToe("huboGanador")) {
+          return;
+        }// con el (this) hacemos referencia a la casilla clicada
         marcarCasilla(this);
         clicarCasilla(this);
         incrementarContador();
         status.innerHTML = string;
         hayGanador();
-    if (getStateTicTacToe("huboGanador")==false){
-        console.log("cambiar turno")
-        cambiarTurno();
-    }
+        if (!getStateTicTacToe("huboGanador")) {
+          console.log("cambiar turno");
+          cambiarTurno();
+        }
+      });
     });
-  }}
+  };
 
 export const reiniciarJuego = () =>{ 
     reiniciar.addEventListener("click",   ()=> {
