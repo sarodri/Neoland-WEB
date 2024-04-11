@@ -1,7 +1,5 @@
-import { setStateTicTacToe, getStateTicTacToe } from "../../global/state/tictactoe.state";
-import { tiles, players } from "../../components";
+import { activarCasillas} from "../../components";
 import "./TicTacToe.css"
-import { cambiarTurno, clicarCasilla, hayGanador, incrementarContador, marcarCasilla } from "../../utils";
 
 const template=() => `
 <section id="status">Game in progress...</section>
@@ -41,59 +39,23 @@ const template=() => `
     </div>
 </section>
 <section id = "players">
-    <div id="player1" class="player 1">player 1</div>
-    <div id="player2" class="player 2">player 2</div>
+    <div id="player1" class="player 1">Player 1</div>
+    <div id="player2" class="player 2"Player 2</div>
 </section>
 `
+
+// exporto los elementos del template que voy a necesitar
 export const status = document.getElementById("status")
-export const celdas = document.getElementsByClassName('tile')
-export const jugadores = document.getElementsByClassName('player')
-
-const reiniciarJuego = () =>{ 
-    const reiniciar = document.getElementById("restart-btn");
-    reiniciar.addEventListener("click",   ()=> {
-    setStateTicTacToe("huboGanador", false);
-    players[0].classList.add("active")
-    players[1].classList.remove("active")
-
-    setStateTicTacToe("playerO", []);
-    setStateTicTacToe("playerX", []);
-    setStateTicTacToe("contador", 0);
-
-    // Borramos el contenido de todas las casillas
-    for (let i = 0; i < tiles.length; i++) {
-        tiles[i].textContent = "";
-    }
-    // Reiniciamos la variable de turn
-    setStateTicTacToe("turn", "x");
-
-    document.getElementById("status").innerHTML = "Game in progress...";
-    document.getElementById("restart-btn").style = 'display:none';
-   }
-);
-}
-// Añadimos un evento de clic a todas las casillas del tablero
-const activarCasillas =()=>{
-    for (var i = 0; i < tiles.length; i++) {
-    tiles[i].addEventListener("click", function () {
-    if (getStateTicTacToe("huboGanador")==true){
-        return
-    }
-        marcarCasilla(this);
-        clicarCasilla(this);
-        incrementarContador();
-        document.getElementById("status").innerHTML = string;
-        hayGanador();
-    if (getStateTicTacToe("huboGanador")==false){
-        console.log("cambiar turno")
-        cambiarTurno();
-    }
-    });
-  }}
+export const celdas = document.querySelectorAll(".tile")
+export const jugadores = document.querySelectorAll(".player")
+export const reiniciar = document.getElementById("restart-btn");
 
 
 export const PrintTicTacToePage = () =>{
     document.querySelector("main").innerHTML = template();
+    document.addEventListener("DOMContentLoaded", () =>{
+        reiniciar.style.display = "none";
+        jugadores[0].classList.add("active")}
+    )
     activarCasillas();
-    reiniciarJuego();
 }

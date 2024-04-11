@@ -1,4 +1,4 @@
-const dataTablero = {
+let dataTablero = {
     turn : "x",
     playerX : [],
     playerO : [],
