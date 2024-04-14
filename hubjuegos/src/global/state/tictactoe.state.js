@@ -6,6 +6,14 @@ let dataTablero = {
     huboGanador : false
 }
 
+export const initTablero = () =>{
+    dataTablero.turn= "x",
+    dataTablero.playerX = [],
+    dataTablero.playerO = [],
+    dataTablero.contador = 0,
+    dataTablero.huboGanador = false
+}
+
 export const getStateTicTacToe = (typeOfValue) => {
     switch (typeOfValue) {
         case "turn":
@@ -41,7 +49,7 @@ export const setStateTicTacToe = (typeOfValue, setValue) => {
             dataTablero.huboGanador= setValue;
             break;
         case "all":
-            dataTablero;
+            initTablero();
             break;
     }
 }

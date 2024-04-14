@@ -76,7 +76,7 @@ let celda = document.getElementsByClassName('tile')
 export const clicarCasilla = (celdas)=> {
 //Obtenemos la clase de la casilla clicada y seleccionamos la segunda clase para saber que casilla es
     let tile = celdas.className.split(" ")[1] ;
-    console.log(tile, "casilla clicada")
+    console.log(document.getElementsByClassName('tile')[tile-1], "casilla clicada")
     // si la celda está llena, no hacemos nada y el jugador pierde turno
     if (document.getElementsByClassName('tile')[tile-1].textContent !== " ") {
         console.log(document.getElementsByClassName('tile')[tile-1])

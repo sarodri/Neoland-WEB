@@ -1,5 +1,5 @@
 import { hayGanador,cambiarTurno,clicarCasilla, incrementarContador } from "../../utils"
-import { getStateTicTacToe} from "../../global/state/tictactoe.state"
+import { getStateTicTacToe, setStateTicTacToe} from "../../global/state/tictactoe.state"
 import "./TicTacToe.css"
 
 const template=() => `
@@ -53,32 +53,41 @@ export const jugadores = document.getElementById("player");
 //const reinicio = document.getElementsByClassName("restart");
 export const reiniciar = document.getElementById("restart-btn");
 
+
 // Añadimos un evento de clic a todas las casillas del tablero
+const pintarTablero = () =>{
+    document.querySelector("main").innerHTML = template();
+}
 
 export const startJuego = () => {
-    console.log("en inicio", getStateTicTacToe("all")) 
+  
     //ocultamos boton de reinicio y activamos al jugador 1
         document.getElementById("restart-btn").style.display="none";
         document.getElementById("player 1").classList.add("active")
+        console.log(setStateTicTacToe("all", "dataTablero"))
+        console.log("en inicio", getStateTicTacToe("all")) 
     const celdas = document.querySelectorAll(".tile")
     console.log(celdas)
     celdas.forEach(celda => {
       celda.addEventListener("click", function() {
+        console.log("en CLICK", getStateTicTacToe("all")) 
         if (getStateTicTacToe("huboGanador")) {
-            console.log("hay ganador")
+            console.log("hay ganador el TicTac")
             return;
         }// con el (this) hacemos referencia a la casilla clicada
+        console.log("startCasilla")
         clicarCasilla(this);
         hayGanador();
         if (!getStateTicTacToe("huboGanador")) {
-            console.log("no hay ganador cambiar turno");
+            console.log("no hay ganador cambiar turno en TicTac");
             cambiarTurno();
-            console.log("entro y cambio de turno")
+        
         }
       });
     });
   };
 export const PrintTicTacToePage = () =>{
-    document.querySelector("main").innerHTML = template();
+    pintarTablero();
     startJuego();
 }
+
