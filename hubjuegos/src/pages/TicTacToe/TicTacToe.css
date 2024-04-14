@@ -94,9 +94,9 @@ body{
 .tile{
     justify-content: center;
     align-items: center;
-    font-size: 150px;
-    width: 125px;
-    height: 125px;
+    font-size: 90px;
+    width: 100px;
+    height: 100px;
     display: flex;
 }
 
