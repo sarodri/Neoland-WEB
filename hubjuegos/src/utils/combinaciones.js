@@ -1,7 +1,7 @@
 import { reiniciarJuego } from "../components";
 import { getStateTicTacToe, setStateTicTacToe } from "../global/state/tictactoe.state";
 
-export const hayGanador = ()=> {
+export const checkGanador = ()=> {
     const combGanadora = [ 
     // combinaciones en horizontal
       [1, 2, 3, 4],

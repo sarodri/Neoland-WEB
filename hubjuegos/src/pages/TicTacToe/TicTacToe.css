@@ -1,3 +1,8 @@
+:root {
+    --active-color: rgb(169, 217, 169);
+    --color-line: black;
+    --boder:15px solid var(--color-line);
+  }
 body{
     color:rgb(18, 91, 58);
 }
@@ -33,7 +38,7 @@ body{
 #restart-btn {
     background-color: rgb(143, 144, 143);
     border: none;
-    color: black;
+    color: var(--color-line);
     padding: 10px 32px;
     text-align: center;
     text-decoration: none;
@@ -48,7 +53,7 @@ body{
 }
 
 .horizontal{
-    border-left: 15px solid black;
+    border-left: var(--boder);
     height:100%;
 }
 
@@ -68,7 +73,7 @@ body{
 }
 
 .vertical{
-    border-top: 15px solid black;
+    border-top: var(--boder);
     width: 100%;
 }
 
@@ -94,7 +99,7 @@ body{
 .tile{
     justify-content: center;
     align-items: center;
-    font-size: 90px;
+    font-size: 5rem;
     width: 100px;
     height: 100px;
     display: flex;
@@ -106,7 +111,6 @@ body{
     display: flex;
     width: 50%;
     justify-content: center;
-    /*justify content mueve el contenido a la mitad al centro del contenedor(solpara flex)  */
     align-items: center;
 }
 
@@ -119,7 +123,51 @@ body{
 }
 
 .active{
-    background:  rgb(169, 217, 169);
-    border: 1px solid rgb(169, 217, 169) ;
+    background:  var(--active-color);
+    border: 1px solid var(--active-color) ;
     border-radius: 5px;
+}
+
+/* Media queries para dispositivos móviles */
+@media screen and (max-width: 600px) {
+
+    #status {
+        font-size: 1.5em;
+        text-align: center;
+        left: 30px;
+        width: auto;
+    }
+    .restart {
+        text-align: center;
+    }
+    #restart-btn {
+        padding: 10px 15px;
+        font-size: 0.8em;
+        background-color: var(--active-color);
+    }
+    #table-section {
+        max-width: 80vw; 
+        margin-top: auto; 
+        height: 80vw;
+        top:35%;
+    }
+    .row{
+        width: 80vw;
+        height: 20vw;
+    }
+    .tile {
+        font-size: 15vw; 
+        width: 20vw; 
+        height: 20vw; 
+    }
+    #players {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 70%;
+        margin-top: 20px;
+    }
+    .player {
+        font-size: 1.2em;
+    }
 }

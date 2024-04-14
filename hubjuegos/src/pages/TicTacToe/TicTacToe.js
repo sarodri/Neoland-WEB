@@ -1,10 +1,12 @@
-import { hayGanador,cambiarTurno,clicarCasilla, incrementarContador } from "../../utils"
+import { cambiarTurno,clicarCasilla, checkGanador } from "../../utils"
 import { getStateTicTacToe, setStateTicTacToe} from "../../global/state/tictactoe.state"
 import "./TicTacToe.css"
 
 const template=() => `
-<section id="status">Game in progress...</section>
-<section class="restart"><button id="restart-btn">Restart Game</button></section>
+
+    <section id="status">Game in progress...</section>
+    <section class="restart"><button id="restart-btn">Restart Game</button></section>
+
 <section id = "table-section">
     <div class = "line horizontal line1"></div>
     <div class = "line horizontal line2"></div>
@@ -43,6 +45,7 @@ const template=() => `
     <div id="player 1" class="player 1">Player 1</div>
     <div id="player 2" class="player 2">Player 2</div>
 </section>
+
 `
 
 // exporto los elementos del template que voy a necesitar
@@ -64,24 +67,18 @@ export const startJuego = () => {
     //ocultamos boton de reinicio y activamos al jugador 1
         document.getElementById("restart-btn").style.display="none";
         document.getElementById("player 1").classList.add("active")
-        console.log(setStateTicTacToe("all", "dataTablero"))
-        console.log("en inicio", getStateTicTacToe("all")) 
+        setStateTicTacToe("all", "dataTablero");
+
     const celdas = document.querySelectorAll(".tile")
-    console.log(celdas)
     celdas.forEach(celda => {
-      celda.addEventListener("click", function() {
-        console.log("en CLICK", getStateTicTacToe("all")) 
+    celda.addEventListener("click", function() {
         if (getStateTicTacToe("huboGanador")) {
-            console.log("hay ganador el TicTac")
             return;
         }// con el (this) hacemos referencia a la casilla clicada
-        console.log("startCasilla")
         clicarCasilla(this);
-        hayGanador();
+        checkGanador();
         if (!getStateTicTacToe("huboGanador")) {
-            console.log("no hay ganador cambiar turno en TicTac");
             cambiarTurno();
-        
         }
       });
     });
