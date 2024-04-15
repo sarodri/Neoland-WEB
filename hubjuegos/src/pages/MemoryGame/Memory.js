@@ -25,6 +25,7 @@ const starGame = () => {
   const stopButton = document.getElementById("stop");
 
   startButton.addEventListener("click", () => {
+    // me carga el contador de movimientos a través del estado, mientras lo hace vemos el swal
     setStateMemory("interval", setInterval(timeGenerator, 1000));
     Swal.fire({
       position: "center",
@@ -36,6 +37,7 @@ const starGame = () => {
       showConfirmButton: false,
       timer: 1000,
     });
+    //seteo los valores a 0 y oculto los controles
     setTimeout(() => {
       setStateMemory("movesCount", 0);
       setStateMemory("seconds", 0);
@@ -44,15 +46,16 @@ const starGame = () => {
       controls.classList.add("hide");
       stopButton.classList.remove("hide");
       startButton.classList.add("hide");
-
+      //me traigo los movimientos a traves del estado
       const moves = document.getElementById("moves");
       moves.innerHTML = `<span>Moves:</span> ${getStateMemory("movesCount")}`;
-      init();
+      init(); //llamo a init para cargar las cartas,ocultar el resultado y poner los movimeintos a 0
     }, 900);
   });
 
   // --------- BOTON DE STOP  ---------------
   const handleStop = () => {
+    //el boton de stop me limpia el tiempo, resetea el intervalo y me muestra de nuevo los controles
     const time = document.getElementById("time");
     time.innerHTML = "";
     clearInterval(getStateMemory("interval"));
@@ -61,7 +64,7 @@ const starGame = () => {
     stopButton.classList.add("hide");
     startButton.classList.remove("hide");
   };
-
+//pongo en memoria los valores del boton de stop
   setStateMemory("stopGame", handleStop);
   stopButton.addEventListener("click", handleStop);
 };
@@ -73,7 +76,7 @@ const init = () => {
   let cardValues = generateRandom();
   generador(cardValues);
 };
-
+//pinto pagina e inicio el juego
 export const PrintMemoryPage = () => {
   document.querySelector("main").innerHTML = template();
   starGame();
