@@ -1,3 +1,17 @@
+/**
+ * Tenemos que requerirnos las diferentes librerrias que vayamos a utilizar:
+ * - para enviar el mail---> nodemailer
+ * - para validar datos como el correo ---> validator
+ * - para encriptar contraseñas -->bcrypt
+ * - para trabajar con .env --> dotenv y configurarlo
+ * 
+ * Vamos a hacer un CRUD --> crear, leer, actualizar y borrar
+ * las funciones seran asincronas porque interatuan con el backend y la DB
+ * Cmo los controladores consumen modelos, tenemos que importar le modelo
+ * 
+ * El frontal simulado que usamos es INSOMNIA
+ */
+
 //! -----------------------------------------------------------------------
 //? ------------------------------librerias--------------------------------
 //! -----------------------------------------------------------------------
@@ -11,7 +25,7 @@ dotenv.config();
 //! -----------------------------------------------------------------------
 //? ------------------------------modelos----------------------------------
 //! -----------------------------------------------------------------------
-const User = require("../models/User.model");
+const User = require("../models/User.model")
 
 //! -----------------------------------------------------------------------
 //? ------------------------utils - middlewares - states ------------------
@@ -35,40 +49,38 @@ const randomPassword = require("../../utils/randomPassword");
 //! -----------------------------------------------------------------------------
 //? ----------------------------REGISTER LARGO EN CODIGO ------------------------
 //! -----------------------------------------------------------------------------
-
-const registerLargo = async (req, res, next) => {
+ //un controlador siempre tiene req, res y next en el mismo orden
+const registerLargo = async (req, res, next) => { //!por cada asyncronia, hago un try catch
   console.log("Entro en LARGO")
-  // capturamos la imagen nueva subida a cloudinary
+  // capturamos la imagen nueva subida a cloudinary: viene de la parte del path que es el file
   let catchImg = req.file?.path;
   try {
-    // actualizamos los elementos unique del modelo
-    await User.syncIndexes();
+    // actualizamos los elementos unique del modelo porque estoy actualizando y cambio datos en la DB: los indexes
+    console.log("entro en try register")
+    await User.syncIndexes(); //primero modelo (en mayusculas), y después el método
 
     const { email, name } = req.body; // lo que enviamos por la parte del body de la request
 
-    // vamos a buscsar al usuario
-    const userExist = await User.findOne(
-      { email: req.body.email },
-      { name: req.body.name }
-    );
+    // vamos a buscar al usuario a través de sus datos unicos
+    const userExist = await User.findOne({ email: req.body.email },{ name: req.body.name });
 
-    if (!userExist) {
-      let confirmationCode = randomCode();
+    if (!userExist) { // sino existe, te registro
+      let confirmationCode = randomCode(); //generamos el codigo de confirmacion y se lo añadimos al nuevo usuario
       const newUser = new User({ ...req.body, confirmationCode });
-      if (req.file) {
+      if (req.file) { //confirmamos si hay o no imagen y sino la asignamos por defecto
         newUser.image = req.file.path;
       } else {
         newUser.image = "https://pic.onlinewebfonts.com/svg/img_181369.png";
       }
 
-      try {
+      try { // guardamos el usuario
         const userSave = await newUser.save();
-        if (userSave) {
+        if (userSave) { // si esta guardado, mandamos un mail con transporter
           // ---------------------------> ENVIAR EL CODIGO CON NODEMAILER --------------------
           const emailEnv = process.env.EMAIL;
           const password = process.env.PASSWORD;
 
-          const transporter = nodemailer.createTransport({
+          const transporter = nodemailer.createTransport({ // hacemos una autenticacion con gmail con los parametros que le pasamos
             service: "gmail",
             auth: {
               user: emailEnv,
@@ -76,34 +88,34 @@ const registerLargo = async (req, res, next) => {
             },
           });
 
-          const mailOptions = {
+          const mailOptions = { // le doy los parametros que quiero que tenga la carta
             from: emailEnv,
             to: email,
             subject: "Confirmation code",
             text: `tu codigo es ${confirmationCode}, gracias por confiar en nosotros ${name}`,
           };
 
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
+          transporter.sendMail(mailOptions, function (error, info) { // le decimos a transporter que mande la carta
+            if (error) { // si no se manda, lanzo error
               console.log(error);
               return res.status(404).json({
                 user: userSave,
                 confirmationCode: "error, resend code",
               });
-            }
+            } // si se manda, lanzo un 200
             console.log("Email sent: " + info.response);
             return res.status(200).json({
               user: userSave,
               confirmationCode,
             });
           });
-        } else {
+        } else { // si no se guarda, lanzamos el error
           return res.status(404).json("error save user");
         }
       } catch (error) {
         return res.status(404).json(error.message);
       }
-    } else {
+    } else { // si el usuario existe, borramos la imagen y decimos que ya existe
       if (req.file) deleteImgCloudinary(catchImg);
       return res.status(409).json("this user already exist");
     }
@@ -620,6 +632,114 @@ const modifyPassword = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ----------------------------UPDATE -----------------------------------------
+//! -----------------------------------------------------------------------------
+
+const update = async (req, res, next) => {
+	// guardamos la imagen para si luego hay un error utilizar la URL para borrarla
+  let catchImg = req.file?.path; // vamos a tener 2 middleware : autenticacion y ficheros
+  try {
+		// creamos una nueva instancia del modelo User con el req.body
+    const patchUser = new User(req.body);
+		// si tiene archivo la request entonces le metemos al usuario creado esa imagen
+    if (req.file) { //! la imagen no esta en el body, esta en re.file (middleware)
+      patchUser.image = req.file.path;
+    } //!elementos que no deben cambiar
+		// importante quedarnos con el id del usuario antes de actualizarse
+    patchUser._id = req.user._id;
+		// LA CONTRASEÑA NO SE PUEDE MODIFICAR: ponemos la contraseña de la db
+    patchUser.password = req.user.password;
+		// Lo mismo con el rol, confirmationCode, check, NO SE PUEDE MODIFICAR POR AQUI
+    patchUser.rol = req.user.rol;
+		patchUser.confirmationCode = req.user.confirmationCode
+		patchUser.check = req.user.check
+		patchUser.email = req.user.email;
+    patchUser.gender= req.user.gender;
+		
+		// Ahora cogemos y actualizamos el usuario 
+    
+    try {
+      await User.findByIdAndUpdate(req.user._id, patchUser);// le paso el patchUser para que pueda cambiarlo
+      if (req.file) {
+        deleteImgCloudinary(req.user.image);
+      }
+      const updateUser = await User.findById(req.user._id); //req.user es el usuario antes de modificarlo
+			// nos traemos del objeto del body sus claves: que cosas me ha pedido que cambie
+      const updateKeys = Object.keys(req.body);
+			/// -----> venerar un array con los resultados del test en el runtime
+      const testUpdate = []; //! en este objeto vacio meto el test
+
+			// recorremos el objeto con las claves y comprobamos si los valores del back coinciden
+      updateKeys.forEach((item) => {
+				// si coinciden pushamos un objeto con el nombre del item y un true
+        if (updateUser[item] == req.body[item]) { //!si son iguales, se han actualizado
+          if (updateUser[item] != req.user[item]) { //!si es distinto a la primera, la actualizo con la nueva
+            testUpdate.push({
+              [item]: true,
+            });
+          } else {
+						// metemos sameOldInfo porque es igual a la info original no hay cambios  //!si no se ha cambiado, pongo que es lo mismo
+            testUpdate.push({
+              [item]: "sameOldInfo",
+            });
+          }
+        } else {
+          testUpdate.push({
+            [item]: false,
+          });
+        }
+      });
+
+			//// lo mismo que arriba pero ahora con el req.file en caso de haberlo recibido
+      if (req.file) {
+        updateUser.image == req.file.path //! es el que compara la URL
+          ? testUpdate.push({
+              file: true,
+            })
+          : testUpdate.push({
+              file: false,
+            });
+      }
+      return res.status(200).json({
+        testUpdate,
+        updateUser
+      });
+    } catch (error) {
+      return res.status(404).json(error.message);
+    }
+  } catch (error) {
+		// siempre que tengamos un error debemos borrar la imagen nueva subida a cloudinary
+    if (req.file) {
+      deleteImgCloudinary(catchImg);
+    }
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ----------------------------DELETE -----------------------------------------
+//! -----------------------------------------------------------------------------
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { _id, image } = req.user;
+    await User.findByIdAndDelete(_id); // aqui lo borro y luego hago un test para ver si lo he borrado
+    if (await User.findById(_id)) { // busca el usuario y si lo encuentra, no está borrado
+      return res.status(404).json('"not deleted');
+    } else {
+
+      // hay que borrar todo lo que haya hecho el usuario
+      deleteImgCloudinary(image);
+      return res.status(200).json('ok delete');
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+
+
 
 module.exports = {
   registerLargo,
@@ -632,5 +752,7 @@ module.exports = {
   autoLogin,
   changePassword,
   sendPassword,
-  modifyPassword
+  modifyPassword,
+  update,
+  deleteUser
 };

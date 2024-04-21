@@ -51,7 +51,6 @@ const template=() => `
 // exporto los elementos del template que voy a necesitar
 export const status = document.getElementById("status")
 export const celdas = document.querySelectorAll(".tile")
-//!jugadores no esta bien
 export const jugadores = document.getElementById("player");
 //const reinicio = document.getElementsByClassName("restart");
 export const reiniciar = document.getElementById("restart-btn");
@@ -70,7 +69,7 @@ export const startJuego = () => {
         setStateTicTacToe("all", "dataTablero");
 
     const celdas = document.querySelectorAll(".tile")
-    celdas.forEach(celda => {
+    celdas.forEach(celda => {//doy evento a cada celda y compruebo si al clicar hay ganador
     celda.addEventListener("click", function() {
         if (getStateTicTacToe("huboGanador")) {
             return;

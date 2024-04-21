@@ -2,7 +2,8 @@
     --active-color: rgb(169, 217, 169);
     --color-line: black;
     --boder:15px solid var(--color-line);
-  }
+}
+
 body{
     color:rgb(18, 91, 58);
 }

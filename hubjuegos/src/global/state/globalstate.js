@@ -2,12 +2,13 @@
 //?-----------------> INICIALIZACION EN LAZY DEL ESTADO ------------------------------
 //! -----------------------------------------------------------------------------------
 
-const currentUser = {
+const currentUser = { //usuario actualmente logado
+  //vwrifica si  hay valor y si no lo pone vacio
     name: sessionStorage.getItem("currentUser")
       ? sessionStorage.getItem("currentUser")
       : "",
   };
-  
+  //verifica si existen los datos del usuario, sino creamos un objeto vacio
   let userData = localStorage.getItem(currentUser.name)
     ? JSON.parse(localStorage.getItem(currentUser.name))
     : {
@@ -15,7 +16,7 @@ const currentUser = {
         token: false,
         fav: [],
       };
-
+//sirve oara almacenar los datos globales
   const dataGlobal = {
     pokemon: [],
     ricky: [],

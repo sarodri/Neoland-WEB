@@ -1,4 +1,5 @@
 export const changeColorRGB = () => {
+  //generamos 3 numeros aleatorios para crear los colores
     const randomNumber = (min, max) => {
       min = Math.ceil(min);
       console.log(min);

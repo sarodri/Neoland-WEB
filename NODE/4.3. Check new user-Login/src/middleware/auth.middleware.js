@@ -15,7 +15,7 @@ const isAuth = async (req, res, next) => {
 
   try {
 
-		// vamos a decodificar el token para sacar el id 
+		// vamos a decodificar el token para sacar el id , hay una req.user que viene de la autenticacion
     const decoded = verifyToken(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.id);
 
