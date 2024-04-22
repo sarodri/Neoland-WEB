@@ -2,12 +2,12 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const generateToken = (id, email) => {
+const generateToken = (id, email) => {// lo registramos en jwt, que es la libreria del token
 	// si no tenemos usuario o email lanzamos un error
   if (!id || !email) {
     throw new Error('Email or id are missing');
   }
-	// Utilizamos sign para registranos y le añadimos la expiracion de 1d
+	// Utilizamos sign para registranos y le añadimos la expiracion de 1d: le pasamos los paramettros que necesitamos para generar el token
   return jwt.sign({ id, email }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 

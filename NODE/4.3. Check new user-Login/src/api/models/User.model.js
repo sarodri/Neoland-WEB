@@ -46,6 +46,17 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    moviesFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }],
+    charactersFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Character" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followed: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    banned: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    commentsPublicByOther: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Menssage" },
+    ], // los que me hacen a mi
+    postedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }], // son los messages que creo
+    /// cuando relacionamos un modelo de con otro lo hacemos con populate y el ref a otr
   },
   {
     // esto es cuando se crea y se actualiza el objeto

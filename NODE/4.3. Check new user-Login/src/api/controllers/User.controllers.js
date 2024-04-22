@@ -131,39 +131,39 @@ const registerLargo = async (req, res, next) => { //!por cada asyncronia, hago u
 
 const registerUtil = async (req, res, next) => {
   console.log("Entro en util")
-  let catchImg = req.file?.path;
+  let catchImg = req.file?.path; // capturamos la imagen
   try {
-    await User.syncIndexes();
+    await User.syncIndexes();// sincronizamos los indexes
 
-    const { email, name } = req.body;
+    const { email, name } = req.body; // hacemos el destructuring del body
 
-    const userExist = await User.findOne(
+    const userExist = await User.findOne( // buscamos en el modelo por elementos unicos body y email
       { email: req.body.email },
       { name: req.body.name }
     );
-    if (!userExist) {
-      let confirmationCode = randomCode();
+    if (!userExist) { // comprobamos si existe o no el usuario en la DB
+      let confirmationCode = randomCode(); // si no existe, le asignamos un codigo de confirmacion haciendo una copia del req.body
       const newUser = new User({ ...req.body, confirmationCode });
-      if (req.file) {
+      if (req.file) { // si sube imagen se la asigno, ino le doy una por defecto
         newUser.image = req.file.path;
       } else {
         newUser.image = "https://pic.onlinewebfonts.com/svg/img_181369.png";
       }
 
-      try {
+      try { // si el usuario no existe y lo vamos a crear, tenemos que comprobar que se haya guardado
         const userSave = await newUser.save();
 
-        if (userSave) {
+        if (userSave) { // si esta guardado, enviamos el email
           sendEmail(email, name, confirmationCode);
-          setTimeout(() => {
-            if (getTestEmailSend()) {
+          setTimeout(() => { //hacemos una cuenta atras para gestionar el envio del correo ya que es algo asincrono. En este tiempo evaluo el estado del envio
+            if (getTestEmailSend()) {// si el envio es true, mandamos un 200
               // el estado ya utilizado lo reinicializo a false
               setTestEmailSend(false);
               return res.status(200).json({
                 user: userSave,
                 confirmationCode,
               });
-            } else {
+            } else {// si no se ha enviado el mail mandamos el 404
               setTestEmailSend(false);
               return res.status(404).json({
                 user: userSave,
@@ -228,11 +228,11 @@ const registerWithRedirect = async (req, res, next) => {
         const userSave = await newUser.save();
 
         if (userSave) {
-          // si hay usuario hacemos el redirech
+          // si hay usuario hacemos el redirech a otra ruta: a sendemail
           return res.redirect(
             303,
-            `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}`
-          );
+            `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}` // en la ruta puedo poner el localhos o un template string con la variable PORT, por si es distinto a 8080
+          ); // el id lo genera la base de datos
         }
       } catch (error) {
         return res.status(404).json(error.message);
@@ -258,7 +258,7 @@ const registerWithRedirect = async (req, res, next) => {
 const sendMailRedirect = async (req, res, next) => {
   console.log("Entro en send")
   try {
-    // nos traemos el id de los params
+    // nos traemos el id de los params: los params es la ruta en este caso :id
     const { id } = req.params;
     // buscamos al usuario por id para luego utilizarlo para sacar el email y el codigo
     const userDB = await User.findById(id);
@@ -432,11 +432,11 @@ const checkNewUser = async (req, res, next) => {
 // recibo email y password: veo q exista el user y si existe, que la contraseña coincida. Si esta OK, genero el TOken
 const login = async (req, res, next) => {
   try {
-		// nos traemos 
+		// nos traemos (password encriptada en DB)
     const { email, password } = req.body;
-    const userDB = await User.findOne({ email });
+    const userDB = await User.findOne({ email });// BUSCAMOS EN LA DB POR EMAIL
 
-    if (userDB) {
+    if (userDB) {// si existe..
 			// comparamos la contrase del body con la del user de la DB
       if (bcrypt.compareSync(password, userDB.password)) {
 				// si coinciden generamos el token
@@ -459,6 +459,8 @@ const login = async (req, res, next) => {
 //! -----------------------------------------------------------------------------
 //? ----------------------------AUTO LOGIN ------------------------
 //! -----------------------------------------------------------------------------
+
+// es igual que el login, solo que ahora compara dos contraseñas encriptadas y no hace falta el comparesync.
 const autoLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -481,6 +483,8 @@ const autoLogin = async (req, res, next) => {
     return next(error);
   }
 };
+
+// *****SIEMPRE QUE HAGA UN LOGIN TENGO QUE CAMIR EL TOKEN EN LAS VARIABLES DE ENTORNO DE INSOMNIA******///
 
 //! -----------------------------------------------------------------------------
 //? ----------------------------CONTRASEÑA SIN LOGAR ------------------------
@@ -512,7 +516,7 @@ const changePassword = async (req, res, next) => {
 
 
       return res.redirect(307,
-        `http://localhost:${PORT}/api/v1/users/sendPassword/${userDb._id}`
+        `http://localhost:8080/api/v1/users/sendPassword/${userDb._id}`
       );
     } else {
       return res.status(404).json('User no register');
@@ -526,7 +530,7 @@ const changePassword = async (req, res, next) => {
 
 const sendPassword = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // LE ENVIAMOS EL ID EN LA RUTA, para poder buscarlo en la DB
     const userDb = await User.findById(id);
 		// configuramos el transporte de nodemailer
     const email = process.env.EMAIL;
@@ -539,7 +543,7 @@ const sendPassword = async (req, res, next) => {
       },
     });
 
-		// Generamos la password secura con la funcion randomPassword 
+		// Generamos la password secura con la funcion randomPassword : esta funcion esta en utils
     let passwordSecure = randomPassword();
     console.log(passwordSecure);
     const mailOptions = {
@@ -564,7 +568,7 @@ const sendPassword = async (req, res, next) => {
           await User.findByIdAndUpdate(id, { password: newPasswordBcrypt });
           const userUpdatePassword = await User.findById(id);
 					/// comprobamos que se haya actualizado correctamente: HACEMOS UN TEST
-          if (bcrypt.compareSync(passwordSecure, userUpdatePassword.password)) {
+          if (bcrypt.compareSync(passwordSecure, userUpdatePassword.password)) {// en el sitio de la contraseña, me pones la nueva encriptada
           return res.status(200).json({
             updateUser: true,
             sendPassword: true,
@@ -738,7 +742,73 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
 
+const byId = async (req, res, next) => {
+  try {
+    const userById = await User.findById(req.params.id); // si no lo encuentra es un null
+    if (userById) {
+      return res.status(200).json(userById);
+    } else {
+      return res.status(404).json("usuario no encontrado");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------getAll--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const getAll = async (req, res, next) => {
+  try {
+    const getAllUser = await User.find(); // esto devuelve un array
+    if (getAll.length === 0) {
+      return res.status(404).json("no encontrados");
+    } else return res.status(200).json({ data: getAllUser });
+  } catch (error) {
+    return next(error);
+  }
+};
+//! -----------------------------------------------------------------------------
+//? ---------------------------------get By name---------------------------------
+//! -----------------------------------------------------------------------------
+
+const byName = async (req, res, next) => {
+  try {
+    const getNameUser = await User.findOne({ name: req.params.name });
+    if (getNameUser) {
+      return res.status(200).json(getNameUser);
+    } else {
+      return res.status(404).json("usuario no encontrado");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------get By Gender---------------------------------
+//! -----------------------------------------------------------------------------
+
+const byGender = async (req, res, next) => {
+  try {
+    const getGenderUser = await User.find({
+      gender: req.params.gender,
+      name: req.params.name,
+    });
+    if (getGenderUser) {
+      return res.status(200).json(getGenderUser);
+    } else {
+      return res.status(404).json("usuario no encontrado");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
 
 
 module.exports = {
@@ -754,5 +824,9 @@ module.exports = {
   sendPassword,
   modifyPassword,
   update,
-  deleteUser
+  deleteUser,
+  getAll,
+  byId,
+  byName,
+  byGender,
 };

@@ -4,7 +4,7 @@
  */
 
 const express = require("express");
-const UserRoutes = express.Router();
+const UserRoutes = express.Router(); // este es el objeto que incluye todas las rutas
 
 const {
   registerLargo,
@@ -46,7 +46,7 @@ UserRoutes.delete("/", [isAuth], deleteUser);
 UserRoutes.post("/register", upload.single("image"), registerWithRedirect);
 
 //!---------------- REDIRECT-------------------------------
-UserRoutes.post("/register/sendMail/:id", sendMailRedirect);
+UserRoutes.post("/register/sendMail/:id", sendMailRedirect); // ruta del controlador redirect
 UserRoutes.patch("/sendPassword/:id", sendPassword);
 
 module.exports = UserRoutes;
