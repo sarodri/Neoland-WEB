@@ -26,7 +26,10 @@ dotenv.config();
 //? ------------------------------modelos----------------------------------
 //! -----------------------------------------------------------------------
 const User = require("../models/User.model")
-
+const Character = require("../models/Character.model");
+const Movie = require("../models/Movie.model");
+const Menssage = require("../models/Message.model");
+const Chat = require("../models/Chat.model");
 //! -----------------------------------------------------------------------
 //? ------------------------utils - middlewares - states ------------------
 //! -----------------------------------------------------------------------
@@ -40,6 +43,8 @@ const {
 const setError = require("../../helpers/handle-error");
 const { generateToken } = require("../../utils/token");
 const randomPassword = require("../../utils/randomPassword");
+const MovieRoutes = require("../routes/Movie.routes");
+
 
 //------------------->CRUD es el acrónimo de "Crear, Leer, Actualizar y Borrar"
 /**+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -645,11 +650,13 @@ const update = async (req, res, next) => {
   let catchImg = req.file?.path; // vamos a tener 2 middleware : autenticacion y ficheros
   try {
 		// creamos una nueva instancia del modelo User con el req.body
+    // actualizamos los elementos unique del modelo
+    await User.syncIndexes();
     const patchUser = new User(req.body);
 		// si tiene archivo la request entonces le metemos al usuario creado esa imagen
-    if (req.file) { //! la imagen no esta en el body, esta en re.file (middleware)
-      patchUser.image = req.file.path;
-    } //!elementos que no deben cambiar
+    req.file && (patchUser.image = catchImg);
+     //! la imagen no esta en el body, esta en re.file (middleware)
+     //!elementos que no deben cambiar
 		// importante quedarnos con el id del usuario antes de actualizarse
     patchUser._id = req.user._id;
 		// LA CONTRASEÑA NO SE PUEDE MODIFICAR: ponemos la contraseña de la db
@@ -710,37 +717,16 @@ const update = async (req, res, next) => {
         updateUser
       });
     } catch (error) {
+      if (req.file) deleteImgCloudinary(catchImg);
       return res.status(404).json(error.message);
     }
   } catch (error) {
-		// siempre que tengamos un error debemos borrar la imagen nueva subida a cloudinary
-    if (req.file) {
-      deleteImgCloudinary(catchImg);
-    }
+    if (req.file) deleteImgCloudinary(catchImg);
     return next(error);
   }
 };
 
-//! -----------------------------------------------------------------------------
-//? ----------------------------DELETE -----------------------------------------
-//! -----------------------------------------------------------------------------
 
-const deleteUser = async (req, res, next) => {
-  try {
-    const { _id, image } = req.user;
-    await User.findByIdAndDelete(_id); // aqui lo borro y luego hago un test para ver si lo he borrado
-    if (await User.findById(_id)) { // busca el usuario y si lo encuentra, no está borrado
-      return res.status(404).json('"not deleted');
-    } else {
-
-      // hay que borrar todo lo que haya hecho el usuario
-      deleteImgCloudinary(image);
-      return res.status(200).json('ok delete');
-    }
-  } catch (error) {
-    return next(error);
-  }
-};
 
 //! -----------------------------------------------------------------------------
 //? ---------------------------------findById------------------------------------
@@ -810,6 +796,296 @@ const byGender = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ----------------------------DELETE -----------------------------------------
+//! -----------------------------------------------------------------------------
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { _id, image } = req.user;
+    await User.findByIdAndDelete(_id); // aqui lo borro y luego hago un test para ver si lo he borrado
+    if (await User.findById(_id)) { // busca el usuario y si lo encuentra, no está borrado
+      return res.status(404).json('"not deleted');
+    } else {
+      // hay que borrar todo lo que haya hecho el usuario
+      deleteImgCloudinary(image);
+      /**Tenemos que borrar:
+       * BOrrar a la persona
+       * los likes del character --->charcater model
+       * los likes del modelo de movies
+       * los likes de los messages
+       * los chats : userOne, userTwo
+       * los mensajes (por el owner)
+       * 
+       * usaremos la query deleteMany()
+       */
+      try {
+        await User.updateMany(
+          { followers: _id },
+          { $pull: { followers: _id } }
+        );
+        try {
+          await User.updateMany(
+            { followed: _id },
+            { $pull: { followed: _id } }
+          );
+          try {
+            //* 1) likes ---> Character
+            await Character.updateMany(
+              { likes: _id },
+              { $pull: { likes: _id } }
+            );
+
+            try {
+              //* 2) likes ---> Movies
+
+              await Movie.updateMany({ likes: _id }, { $pull: { likes: _id } });
+
+              try {
+                //* 3) likes ---> Messages
+                await Menssage.updateMany(
+                  { likes: _id },
+                  { $pull: { likes: _id } }
+                );
+                try {
+                  //* 4) userOne, userTwo: Chat
+                  await Chat.deleteMany({ userOne: _id });
+                  try {
+                    await Chat.deleteMany({ userTwo: _id });
+                    try {
+                      req.user.chats.forEach(async (idDeLosChatsBorrados) => {
+                        await User.updateMany(
+                          { chats: idDeLosChatsBorrados },
+                          { $pull: { chats: idDeLosChatsBorrados } }
+                        );
+                      });
+                      try {
+                        //* 5) owner -->Message
+                        await Menssage.deleteMany({ owner: _id });
+                        //! ----------REDIRECT--------------------------
+                        console.log("😘", req.user.postedMessages);
+                        return res.redirect(
+                          307,
+                          `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
+                            req.user.postedMessages
+                          )}`
+                        );
+                      } catch (error) {
+                        return res.status(404).json({
+                          error: "Messages deleteMany - owner",
+                          message: error.message,
+                        });
+                      }
+                    } catch (error) {
+                      return res.status(404).json({
+                        error:
+                          "User updateMany -- bucle de los id del resto de user de mis chats borrados",
+                        message: error.message,
+                      });
+                    }
+                  } catch (error) {
+                    return res.status(404).json({
+                      error: "chat deleteMany -- userTwo",
+                      message: error.message,
+                    });
+                  }
+                } catch (error) {
+                  return res.status(404).json({
+                    error: "chat deleteMany -- userOne",
+                    message: error.message,
+                  });
+                }
+              } catch (error) {
+                return res.status(404).json({
+                  error: " Menssage updateMany  --  likes",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " Movies updateMany  --  likes",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: " Character updateMany  --  likes",
+              message: error.message,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: " user updateMany  -- followers ",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: " user updateMany  -- followed ",
+          message: error.message,
+        });
+      } 
+    }
+  } catch(error){
+    return next(error)
+  }
+};
+ const deleteMessageDeleteUser = async(req, res, next) =>{
+  try {
+    const { arrayIdMessages } = req.params;
+    const parseArray = JSON.parse(arrayIdMessages);
+    console.log("😘", parseArray);
+
+    await parseArray.forEach(async (id) => {
+      try {
+        const mensageDelete = await Menssage.findByIdAndDelete(id);
+
+        if (mensageDelete.type == "public") {
+          try {
+            // update many Movie - comments
+
+            await Movie.updateMany(
+              { comments: id },
+              { $pull: { comments: id } }
+            );
+
+            try {
+              // update many Characters - comments
+              await Character.updateMany(
+                { comments: id },
+                { $pull: { comments: id } }
+              );
+              try {
+                // update many User - commentsPublicByOther
+                await User.updateMany(
+                  { commentsPublicByOther: id },
+                  { $pull: { commentsPublicByOther: id } }
+                );
+              } catch (error) {
+                return res.status(404).json({
+                  error: " user updateMany  -- commentsPublicByOther ",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " character updateMany  -- comments ",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: "movie updateMany  --  comments ",
+              message: error.message,
+            });
+          }
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "message delete",
+          message: error.message,
+        });
+      }
+    });
+
+    return await res.status(200).json("delete ok");
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+}
+
+//?--follow------//
+const followUserToggle = async (req, res, next) => {
+  try {
+    const { idUserSeQuiereSeguir } = req.params;
+    const { followed } = req.user; // busco en el arrray de seguidores si le sigo o no este usuario
+
+    if (followed.includes(idUserSeQuiereSeguir)) {
+      // si los que sigo esta el id del que quiero seguir lo saco del array
+      //! si lo incluye, quiere decir lo sigo por lo que lo dejo de seguir
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $pull: {
+            followed: idUserSeQuiereSeguir,
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $pull: {
+              followers: req.user._id,
+            },
+          });
+
+          return res.status(200).json({
+            action: "he dejado de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update borrar de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    } else {
+      //! si no lo tengo como que lo sigo, lo empiezo a seguir
+
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $push: {
+            followed: idUserSeQuiereSeguir,
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $push: {
+              followers: req.user._id,
+            },
+          });
+
+          return res.status(200).json({
+            action: "Lo empiezo a seguir de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update poner de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "error catch general",
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   registerLargo,
@@ -829,4 +1105,6 @@ module.exports = {
   byId,
   byName,
   byGender,
+  deleteMessageDeleteUser,
+  followUserToggle,
 };

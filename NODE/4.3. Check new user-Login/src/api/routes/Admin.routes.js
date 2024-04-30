@@ -16,11 +16,7 @@ const {
 //?--------------------------------RUTAS SIN REDIRECT----------------------
 //!------------------------------------------------------------------------
 AdminRoutes.patch("/changeGender/:idUserChanged", changeGender);
-AdminRoutes.patch(
-  "/superAdmin/changeAdmin/:idUser",
-  [isAuthSuper],
-  changeAdmin
-);
+AdminRoutes.patch("/superAdmin/changeAdmin/:idUser",[isAuthSuper],changeAdmin);
 //!------------------------------------------------------------------------
 //?--------------------------------RUTAS CON REDIRECT----------------------
 //!------------------------------------------------------------------------
