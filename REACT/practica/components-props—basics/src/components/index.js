@@ -1,0 +1,7 @@
+export * from "./Tile/Tile"
+export * from "./SubTile/SubTile"
+export * from "./Image/Image"
+export * from "./Paragraph/Paragraph"
+export * from "./Header/Header"
+export * from "./Main/Main"
+export * from "./Footer/Footer"
