@@ -1,0 +1,4 @@
+#characterFigure{
+  display: flex;
+  flex-wrap: wrap;
+}
