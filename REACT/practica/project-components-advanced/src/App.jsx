@@ -11,7 +11,7 @@ import Tile from './components/Tile'
 import img from "./assets/react.svg"
 
 function App() {
-  const characters = ["Pepe", "Lucía", "Diana", "Borja"]
+
 
   return (
     <>
