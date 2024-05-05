@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css'
-import { Figure } from './components';
+import CharacterList from './components/CharacterList';
 // 1. Recoger el nombre del personaje.
 // 2. Recoger el id del personaje → usarlo como key.
 // 3. Recoger la image proporcionada por la API.
@@ -21,46 +21,13 @@ import { Figure } from './components';
 //       status: "Alive",
 //     },
 //   ];
-
-function App() {
   // const mystate= React.useState(charactersMock)
 
   // const characters= mystate[0]
   // const charactersSet = mystate[1]
+function App() {
+  return <CharacterList />
 
-  const [characterList, setCharacterList] = React.useState([]);
-
-  React.useEffect(() => {
-    (async () => {
-      let data = await fetch(`https://rickandmortyapi.com/api/character/`).then(
-        (res) => res.json()
-      );
-
-      setCharacterList(data.results);
-    })();
-  }, []);
-
-  return (
-    <>
-    <h1>Ricky and Morty characters</h1>
-    
-    <div id="characterFigure">
-      {characterList.map((character) =>
-        character.status === "Alive" ? ( //Comprobamos que el status del personaje sea "Alive" y si es así renderizar el Figure
-          <div key={character.id}>
-            <Figure
-            src={character.image}
-            name={character.name}
-            status={character.status}
-            origin={character.origin.name}
-            />
-          </div>
-        ) : null // Si el personaje no está "Alive", no se renderiza nada
-      )}
-    </div>
-      
-    </>
-  )
 }
 
 export default App

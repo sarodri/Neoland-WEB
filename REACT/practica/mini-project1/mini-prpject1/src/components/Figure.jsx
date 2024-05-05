@@ -1,12 +1,12 @@
 import "./Figure.css";
 
-export const Figure = ({ name, src, status, origin }) => {
+export const Figure = ({ character}) => {
   return (
     <figure>
-      <h3 id="name">{name}</h3>
-      <img src={src} alt={name} />
-      <h3>{status}</h3>
-      <p>{origin}</p>
+      <h3 id="name">{character.name}</h3>
+      <img src={character.image} alt={"character"} />
+      <h3>{character.status}</h3>
+      <p>{character.origin.name}</p>
     </figure>
   );
 };
