@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import { FaRegClock } from "react-icons/fa";
 
 const DigitalClock = () => {
     //con useState vamos a setear la hora
@@ -15,6 +16,7 @@ const DigitalClock = () => {
       }, []);
   return (
     <div className="digital-clock">
+    <FaRegClock />
     <h2>{clockState}</h2>
   </div>
   )

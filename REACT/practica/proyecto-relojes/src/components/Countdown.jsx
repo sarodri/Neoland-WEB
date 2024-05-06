@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from "react";
+import { MdDateRange } from "react-icons/md";
 
 const Countdown = () => {
     const [time, setTime] = useState("");
@@ -24,6 +25,7 @@ const Countdown = () => {
         }, 1000); {/**añadimos un intervalo de un segundo para que la funcion se ejecute */}
     }, []);
     return <div className="countdown">
+        <MdDateRange />
         <h2>{time}</h2>
     </div>;
 }
