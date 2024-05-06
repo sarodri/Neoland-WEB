@@ -1,0 +1,36 @@
+*{
+  margin: auto;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("./assets/background.jpeg") ;
+}
+.digital-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(245, 180, 158);
+  padding: 20px 80px;
+  border-radius: 20px;
+  color: rgb(166, 225, 206);
+  font-size: 35px;
+}
+.countdown{
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(245, 180, 158);
+  padding: 20px 80px;
+  border-radius: 20px;
+  color: rgb(166, 225, 206);
+  font-size: 25px;
+}
