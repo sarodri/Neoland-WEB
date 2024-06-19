@@ -20,7 +20,7 @@ const Heroes = () => {
         ))}
       </ul>
     </div>
-    <Outlet />
+    <Outlet /> {/**outlet renderiza a los hijos (cada heroe por su id) */}
   </>
   )
 }

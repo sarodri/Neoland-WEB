@@ -1,25 +1,24 @@
+import image from "../assets/WhatsApp Image 2023-12-11 at 13.58.03.jpeg";
+
 export const CV = {
     hero: {
-      name: "Anthony",
-      surname: "Edward Stark",
-      city: "Avengers Tower / New York",
-      email: "tony@starkindustries.com",
-      birthDate: "29/05/1970",
-      phone: "(+12) 767333841 NO PONGAIS EL VUESTRO POR FAVOR",
-      image: "https://i.imgur.com/ZQAkED3.png",
-      gitHub: "https://github.com/tonystark",
+      name: "Sandra",
+      surname: "Ropero",
+      city: "Algeciras / Cádiz",
+      email: "sroperodri@gmail.com",
+      birthDate: "01/10/1987",
+      phone: "675028030",
+      image: image,
+      gitHub: "https://github.com/sarodri",
       aboutMe: [
         {
-          info: "🤖 My armor, it was never a distraction or a hobby, it was a cocoon. I am Iron Man.",
+          info: "🤖 Mis fortalezas son la constancia, el afán de superación y mi capaciad de adaptación.",
         },
         {
-          info: "🔩 CEO of Stark Industries.",
+          info: "🔩 Junior web Developer.",
         },
         {
-          info: "🕶 Genius, billionaire, playboy, philanthropist.",
-        },
-        {
-          info: "🦾 I do have a responsibility to keep my inventions from evil hands – but I have a greater responsibility to oppose that evil any way I can.",
+          info: "🕶 In quieta, curiosa, sociable e incansable en conococer cosas nuevas.",
         },
       ],
     },
