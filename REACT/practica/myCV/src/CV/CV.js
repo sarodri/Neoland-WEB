@@ -1,4 +1,6 @@
 import image from "../assets/WhatsApp Image 2023-12-11 at 13.58.03.jpeg";
+import image2 from "../assets/Captura de pantalla 2024-06-20 a las 11.44.28.png";
+import image3 from "../assets/Captura de pantalla 2024-06-20 a las 11.46.49.png";
 
 export const CV = {
     hero: {
@@ -10,6 +12,7 @@ export const CV = {
       phone: "675028030",
       image: image,
       gitHub: "https://github.com/sarodri",
+      linkedin: "https://www.linkedin.com/in/sandra-ropero-rodriguez/",
       aboutMe: [
         {
           info: "🤖 Mis fortalezas son la constancia, el afán de superación y mi capaciad de adaptación.",
@@ -18,70 +21,76 @@ export const CV = {
           info: "🔩 Junior web Developer.",
         },
         {
-          info: "🕶 In quieta, curiosa, sociable e incansable en conococer cosas nuevas.",
+          info: "🕶 Inquieta, curiosa, sociable e incansable en conococer cosas nuevas.",
         },
       ],
     },
     education: [
       {
-        name: "Master in physics",
-        date: "1985",
-        where: "MIT",
+        name: "Bootcamp FullStack web Development",
+        date: "2024",
+        where: "Neoland School",
       },
       {
-        name: "Aeronautical Engineering",
-        date: "1995",
-        where: "ATI Vaughn College",
+        name: "Química Industrial",
+        date: "2017",
+        where: "Algeciras",
       },
       {
-        name: "Weapons Engineer",
-        date: "1998",
-        where: "Firearm Collegue, Queens",
+        name: "Ciencias Ambientales",
+        date: "2010",
+        where: "Universidad de Córdoba",
       },
     ],
     experience: [
       {
-        name: "Consultant",
-        date: "01/01/2013 – Nowadays",
-        where: "S.H.I.E.L.D",
+        name: "Jr Web Development",
+        date: "2023-2024 Freelance-Proyectos prácticos",
+        where: "Algeciras",
         description:
-          "It builds the helicarriers used by S.H.I.E.L.D. It produces the Quinjets used by the Avengers.",
+          "Desde 2023 realizo proyectos prácticos personales utilizando tecnologías como JS, React, CSS, HTML, Node JS, Wordpress, MongoDB, Express JS, GIT.",
       },
       {
-        name: "CEO",
-        date: "01/01/2000 – 28/02/2012",
-        where: "Stark Industries",
+        name: "Jefa de Equipo",
+        date: "2010 – 2023",
+        where: "Sector Comercial",
         description:
-          "Manage the company, which is a multi-billion dollar multinational corporation that develops and manufactures advanced weapon and defense technologies. The company manufactures the armor worn by Iron Man and War Machine.",
+          "Gestión de equipos, seguimiento de ventas, elaboración y seguimiento de objetivos, atención al cliente.",
       },
     ],
-    languages: {
+    languages: [
+      {
+      language: "Español",
+      wrlevel: "Nativo",
+      splevel: "Nativo",
+      }, 
+      {
       language: "English",
-      wrlevel: "Native",
-      splevel: "Native",
-    },
-    habilities: [
-      "Robotics",
-      "Robot Programming",
-      "Physics",
-      "Weaponery",
-      "Engineer",
-      "Money",
-      "Dating",
-      "Saving the world",
+      wrlevel: "B2",
+      splevel: "B1",
+      }
     ],
-    volunteer: [
+    habilities: [
+      "Programación",
+      "Desarrollo",
+      "Liderazgo",
+      "Resolución eficiente de problemas",
+      "Trabajo en equipo",
+    ],
+    projects: [
       {
-        name: "September Foundation",
-        where: "MIT",
+        name: "Proyecto Gimnasio",
+        image: image3,
+        where: "Neoland School",
         description:
-          "The September Foundation is a program by Tony Stark to fund schools and young prodigies in their education. The foundation was named by Stark after a lyric from The Fantasticks song, 'Try to Remember,' which he heard his mother sing and play on the piano before her death.",
+          "Proycecto final para Bootcamp: desarrollo de Backend y Frontend para un web funcional de un gimnasio donde el usuario puede realizar diversas gestiones.",
       },
       {
-        name: "Damage Control",
-        where: "U.S.A.",
+        name: "Proyectos prácticos",
+        image: image2,
+        where: "GitHub",
         description:
-          "The United States Department of Damage Control, occasionally known as the DODC, is a department of the United States of America. Initially a subsidiary of S.H.I.E.L.D., Damage Control was an organization specializing in post-battle clean-up. Following the Battle of New York, Damage Control was made into an executive branch of the United States government, and in a joint venture with Stark Industries, was tasked with acquiring alien and other dangerous artifacts along with cleaning up damages caused by enhanced individuals.",
+          "Pequeño proyectos prácticos personales para poner en práctica conocimientos adquiridos en Js, CSS, HTML, React o Wordpress.",
       },
     ],
   };

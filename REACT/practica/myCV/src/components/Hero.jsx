@@ -5,7 +5,7 @@ import React from "react";
 const Hero = ({ hero }) => {
   return (
     <div className="hero card">
-      <img src={hero.image} alt="" />
+      <img src={hero.image} alt="foto" />
       <h2>
         {hero.name} {hero.surname}
       </h2>
@@ -18,6 +18,9 @@ const Hero = ({ hero }) => {
           </a>
         </p>
         <p>📱 {hero.phone}</p>
+        <p>💾 <a href={hero.linkedin}>
+            LinkedIn
+          </a></p>
         <p>💾 <a href={hero.gitHub}>
             GitHub
           </a></p>

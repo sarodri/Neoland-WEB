@@ -21,15 +21,19 @@
 
 .languages .name,
 .habilities .name,
-.volunteer .name {
+.projects .name {
     color: #333;
     font-size: 16px;
     margin: 10px 0 5px 0;
 }
+.projects img{
+    border-radius: 10px;
+    width: 40vw;
+}
 
 .languages p,
 .habilities p,
-.volunteer p {
+.projects p {
     margin: 5px 0;
     color: #888;
 }

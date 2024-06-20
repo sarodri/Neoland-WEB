@@ -5,7 +5,9 @@
   }
 
   img {
-    width: 150px;
+    width: 15vw;
+    height: 35vh;
+    min-width: 180px;
     margin: 20px;
     border-radius: 50px;
   }

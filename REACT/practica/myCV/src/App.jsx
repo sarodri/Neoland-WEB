@@ -7,7 +7,7 @@ import Experience from "./components/Experience";
 import More from "./components/More";
 import { CV } from "./CV/CV.js";
 
-const { hero, education, experience, languages, habilities, volunteer } = CV; //hacemos destructuring
+const { hero, education, experience, languages, habilities, projects } = CV; //hacemos destructuring
 
 function App() {
  
@@ -40,7 +40,7 @@ function App() {
 	      <More
           languages={languages}
           habilities={habilities}
-          volunteer={volunteer}
+          projects={projects}
 	      />
     </div>
   )
